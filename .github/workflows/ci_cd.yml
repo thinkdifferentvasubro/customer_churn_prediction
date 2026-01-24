@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build The Docker Image
-        run: docker build . --file DockerFile --tag workflow-test:latest
+        run: docker build -t customer_churn_prediction:latest
 
   build-and-publish:
     needs: dockerbuild
@@ -61,6 +61,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./DockerFile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/flasktest-app:latest
