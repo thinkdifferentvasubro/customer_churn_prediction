@@ -8,3 +8,4 @@ scipy==1.15.2
 fastapi==0.115.12
 gradio==5.27.0
 requests==2.32.3
+optuna==4.6.0
