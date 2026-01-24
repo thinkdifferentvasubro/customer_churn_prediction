@@ -1,0 +1,23 @@
+# GitHub metadata
+.github/
+
+# Trash or temp files
+.trash/
+
+# Data folders
+Data/
+src/Data/
+
+# Machine learning experiment tracking
+mlruns/
+
+# Notebooks
+Notebooks/
+
+# Scripts
+scripts/
+
+# Model folder
+src/model/
+
+README.md
