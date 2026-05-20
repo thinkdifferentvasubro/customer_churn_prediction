@@ -8,3 +8,4 @@ optuna==4.6.0
 mlflow==3.8.1
 pydantic==2.11.3
 cloudpickle==3.1.2
+psutil==7.0.0
