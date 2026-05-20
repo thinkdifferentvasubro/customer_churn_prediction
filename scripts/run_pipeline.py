@@ -1,9 +1,7 @@
 import os
 import sys
-import argparse
 import mlflow
 import mlflow.sklearn
-import pandas as pd
 from sklearn.pipeline import Pipeline
 
 # make src importable
@@ -16,38 +14,26 @@ from src.model.train import training
 from src.model.eval import evaluation
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Customer Churn Training Pipeline")
-    parser.add_argument(
-        "--path",
-        type=str,
-        required=True,
-        help="Path to input CSV file"
-    )
-    parser.add_argument(
-        "--target",
-        type=str,
-        required=True,
-        help="Target column name"
-    )
-    return parser.parse_args()
+def get_data_path():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(base_dir, "..", "Data", "churn.csv")
+    return path
 
-
-def main():
-    args = parse_args()
-    current_dir = os.getcwd()
-    parent_dir = os.path.dirname(current_dir)
-    tracking_uri = f"file:///{os.path.join(parent_dir, "mlruns").replace(os.sep, '/')}"  # Use forward slashes
-    mlflow.set_tracking_uri(tracking_uri)
-    mlflow.set_experiment("churn_logistic_regression")
+def main(target="churn"):
+    mlflow.set_tracking_uri("http://127.0.0.1:5000")
+    mlflow.set_experiment("Customer churn prediction")
 
     with mlflow.start_run():
         # -------- Load data --------
-        df = load_data(args.path)
+        data_path = get_data_path()
+        if not os.path.exists(data_path):
+            raise FileNotFoundError("Data file not found")
+        
+        df = load_data(data_path)
 
         # -------- Preprocessing --------
         x_train, x_test, y_train, y_test, col_transformer = preprocessor(
-            df, args.target
+            df, target
         )
 
         # -------- Hyperparameter tuning --------
@@ -84,4 +70,5 @@ def main():
         print("Training complete.")
         print(f"Evaluation metrics:\nPrecision: {precision}, Recall: {recall}, F1: {f1}, ROC: {roc}")
 
-main()
+if __name__=="__main__":
+    main()

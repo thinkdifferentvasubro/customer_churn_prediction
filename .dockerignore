@@ -1,6 +1,9 @@
 # GitHub metadata
 .github/
 
+#Caches
+__pycache__
+
 # Trash or temp files
 .trash/
 

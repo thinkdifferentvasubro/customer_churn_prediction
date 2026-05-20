@@ -1,6 +1,5 @@
 import os
 import sys
-import argparse
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
@@ -14,32 +13,20 @@ from src.model.train import training
 from src.model.eval import evaluation
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Customer Churn Training Pipeline")
-    parser.add_argument(
-        "--path",
-        type=str,
-        required=True,
-        help="Path to input CSV file"
-    )
-    parser.add_argument(
-        "--target",
-        type=str,
-        required=True,
-        help="Target column name"
-    )
-    return parser.parse_args()
+def get_data_path():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(base_dir, "..", "Data", "churn.csv")
+    return path
 
-
-def main():
-    args = parse_args()
-    df = load_data(args.path)
+def main(target="churn"):
+    path = get_data_path()
+    df = load_data(path)
     
     assert df.shape[0] > 0 and df.shape[1] > 0, "data loading failed"
     
         # -------- Preprocessing --------
     x_train, x_test, y_train, y_test, col_transformer = preprocessor(
-            df, args.target
+            df, target
         )
     
     assert set(y_train).issubset({0, 1}) and set(y_test).issubset({0, 1}), "Target contains values other than 0 and 1"
@@ -59,5 +46,5 @@ def main():
     assert best_value > 0.60, "model is not accurate enough" 
     
 
-    
-main()
+if __name__=="__main__":
+    main()

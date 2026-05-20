@@ -22,7 +22,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run tests
-        run: python tests/test_pipeline.py --path "Data/churn.csv" --target "churn"
+        run: python tests/test_pipeline.py"
 
   build-and-publish:
     needs: run-tests
